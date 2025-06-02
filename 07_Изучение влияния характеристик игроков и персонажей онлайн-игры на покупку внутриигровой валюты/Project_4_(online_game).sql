@@ -143,38 +143,6 @@ WITH
 	JOIN fantasy.race r USING (race_id)
 	ORDER BY payers_share desc
 
-	-- старый код
-/*WITH 
-		p_users AS ( 
-			SELECT id -- выводим всех платящих игроков
-			FROM fantasy.users
-			WHERE payer = 1 
-			),
-		transactions AS (
-			SELECT id, -- делаем расчеты по транзакциям для каждого игрока
-			COUNT (transaction_id) trans_count,
-			AVG (amount) avg_amount,
-			SUM (amount) sum_amount
-			FROM fantasy.events
-			GROUP BY id 
-			)
-	SELECT 
-		r.race,
-		COUNT (DISTINCT u.id) users_count, -- общее количество зарегистрированных игроков
-		COUNT (DISTINCT e.id) users_with_trans_count, -- количество игроков, которые совершают внутриигровые покупки
-		ROUND (COUNT (DISTINCT e.id) / COUNT (DISTINCT u.id) :: NUMERIC, 4) users_with_trans_per_users, -- их доля от общего количества
-		ROUND (COUNT (DISTINCT pu.id) / COUNT (DISTINCT e.id) :: NUMERIC, 4) paying_users_per_users_with_trans, -- доля платящих игроков от количества игроков, которые совершили покупки
-		ROUND (AVG (trans_count) :: NUMERIC, 0) avg_trans_per_users, -- среднее количество покупок на одного игрока
-		ROUND (AVG (avg_amount) :: NUMERIC, 2) avg_amount_per_users, --средняя стоимость одной покупки на одного игрока
-		ROUND (AVG (sum_amount) :: NUMERIC, 2) avg_sum_per_users -- средняя суммарная стоимость всех покупок на одного игрока
-	FROM fantasy.events e 
-	RIGHT JOIN fantasy.users u USING (id)
-	JOIN fantasy.race r USING (race_id)
-	LEFT JOIN p_users pu USING (id)
-	LEFT JOIN transactions t USING (id)
-	GROUP BY r.race
-	ORDER BY paying_users_per_users_with_trans desc*/
-
 	
 	
 -- Задача 2: Частота покупок БЕЗ УЧЕТА ПОКУПОК С НУЛЕВОЙ СТОИМОСТЬЮ
